@@ -11,16 +11,22 @@ install:
   - npm install -g coveralls
   - npm install solidity-coverage
   - npm install
+
+matrix:
+  fast_finish: true
+  allow_failures:
+    - env: 'TASK=test'
+    - env: 'TASK=coverage'
   
 jobs:
-  fast_finish: true
   include:
     - stage: compile
       script: truffle compile
     - stage: deploy
       script: ganache-cli -e 10000000 -p 7545 -g 1 > /dev/null & truffle deploy
-  allow_failures:
     - stage: test
+      env: 'TASK=test'
       script: ganache-cli -e 10000000 -p 7545 -g 1 > /dev/null & truffle test
     - stage: coverage
+      env: 'TASK=coverage'
       script: npm run coverage && cat coverage/lcov.info | coveralls
