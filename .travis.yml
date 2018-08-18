@@ -21,6 +21,6 @@ jobs:
       script: ganache-cli -e 10000000 -p 7545 -g 1 > /dev/null & truffle deploy
   allow_failures:
     - stage: test
-      script: truffle test
+      script: ganache-cli -e 10000000 -p 7545 -g 1 > /dev/null & truffle test
     - stage: coverage
       script: npm run coverage && cat coverage/lcov.info | coveralls
