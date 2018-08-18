@@ -8,6 +8,8 @@ node_js:
 install:
   - npm install -g truffle
   - npm install -g ganache-cli
+  - npm install -g coveralls
+  - npm install solidity-coverage
   - npm install
 
 script:
@@ -15,3 +17,4 @@ script:
   - sleep 5
   - truffle compile
   - truffle test
+  - npm run coverage && cat coverage/lcov.info | coveralls
