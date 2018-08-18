@@ -3,7 +3,7 @@ sudo: required
 language: node_js
 
 node_js:
-  - "9"
+  - "8"
 
 install:
   - npm install -g truffle
@@ -15,18 +15,12 @@ install:
 matrix:
   fast_finish: true
   allow_failures:
-    - env: 'TASK=test'
     - env: 'TASK=coverage'
   
 jobs:
   include:
-    - stage: compile
-      script: truffle compile
-    - stage: deploy
+    - stage: compile and deploy
       script: ganache-cli -e 10000000 -p 7545 -g 1 > /dev/null & truffle deploy
-    - stage: test
-      env: 'TASK=test'
-      script: ganache-cli -e 10000000 -p 7545 -g 1 > /dev/null & truffle test
-    - stage: coverage
+    - stage: test and coverage
       env: 'TASK=coverage'
       script: npm run coverage && cat coverage/lcov.info | coveralls
