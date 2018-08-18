@@ -13,11 +13,13 @@ install:
   - npm install
   
 jobs:
+  fast_finish: true
   include:
     - stage: compile
       script: truffle compile
     - stage: deploy
       script: ganache-cli -e 10000000 -p 7545 -g 1 > /dev/null & truffle deploy
+  allow_failures:
     - stage: test
       script: truffle test
     - stage: coverage
