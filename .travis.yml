@@ -11,10 +11,14 @@ install:
   - npm install -g coveralls
   - npm install solidity-coverage
   - npm install
-
-script:
-  - ganache-cli -e 10000000 -p 7545 -g 1 > /dev/null &
-  - sleep 5
-  - truffle compile
-  - truffle test
-  - npm run coverage && cat coverage/lcov.info | coveralls
+  
+jobs:
+  include:
+    - stage: compile
+      script: truffle compile
+    - stage: deploy
+      script: ganache-cli -e 10000000 -p 7545 -g 1 > /dev/null & truffle deploy
+    - stage: test
+      script: truffle test
+    - stage: coverage
+      script: npm run coverage && cat coverage/lcov.info | coveralls
