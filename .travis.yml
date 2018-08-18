@@ -7,8 +7,10 @@ node_js:
 
 install:
   - npm install -g truffle
+  - npm install -g ganache-cli
   - npm install
 
 script:
+  - ganache-cli -e 10000000 -p 7545 -g 1
   - truffle compile
   - truffle test
